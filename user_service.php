@@ -18,11 +18,8 @@ function doesUserExist($email) {
     return !empty($user);
 }
 
-function saveUser($name, $email, $password) {
-    $file = fopen("users/users.txt", "a");
-    $newUser = $email . '|' . $name . '|' . md5($password);
-    fwrite($file, PHP_EOL . $newUser); 
-    fclose($file);
+function storeUser($name, $email, $password) {
+    saveUser($name, $email, $password);
 }
 
 ?>

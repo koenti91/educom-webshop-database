@@ -6,7 +6,7 @@ require_once ("constants.php");
 require_once ("session_manager.php");
 require_once ("validations.php");
 require_once ("user_service.php");
-require_once ("file_repository.php");
+require_once ("db_repository.php");
 
 // Main
 $page = getRequestedPage();
