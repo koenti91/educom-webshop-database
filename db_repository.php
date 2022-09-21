@@ -64,8 +64,18 @@ function saveUser($name, $email, $password) {
     closeDatabase($conn);
 }
 
-function changePassword($password) {
-    
+function changePassword($newPassword, $password, $oldPassword) {
+    $conn = connectDatabase();
+
+    $sql = "UPDATE users SET password = '$newPassword' WHERE '$password' = '$oldPassword'";
+
+    if (mysqli_query($conn,$sql)) {
+        echo "Wachtwoord gewijzigd.";
+    } else {
+        echo "Error updating password: " .mysqli_error($conn);
+    }
+
+    closeDatabase($conn);
 }
 
 ?>

@@ -4,11 +4,20 @@ function showChangePwHeader() {
     echo ' Wachtwoord veranderen';
 }
 
+function showChangePwContent() {
+    $data = validateContact();
+    if (!$data ["valid"]) {
+        showChangePwForm ($data);
+        } else {
+        showChangePwConfirmationMessage ($data);
+    }
+}
+
 function showChangePwForm($data) {
     echo '
    <h3> Wachtwoord veranderen</h3>
 
-    <form action="changepw.php" method="post">
+    <form action="" method="post">
 							
     <fieldset>
         <label for="current-password"><b>Oud wachtwoord: </b></label>
@@ -23,12 +32,12 @@ function showChangePwForm($data) {
         <input class="password" type="password" name="new-password2" id="new-password2" maxlength="50" required>
         <span class="error">* '. $data["repeatNewPasswordErr"] .' </span>
         </fieldset>
-        <button type="submit">Change password</button>
+        <button class="submit" type="submit">Change password</button>
     
 </form>';
 }
 
-function showChangePwConfirmationMessage($data) {
+function showChangePwConfirmationMessage() {
     echo
     '<p> Je wachtwoord is gewijzigd.</p>';
 }

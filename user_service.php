@@ -22,4 +22,8 @@ function storeUser($name, $email, $password) {
     saveUser($name, $email, $password);
 }
 
+function storeNewPassword($password, $newPassword, $oldPassword) {
+    changePassword($password, $newPassword, $oldPassword);
+}
+
 ?>
