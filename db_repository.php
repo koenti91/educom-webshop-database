@@ -64,5 +64,8 @@ function saveUser($name, $email, $password) {
     closeDatabase($conn);
 }
 
+function changePassword($password) {
+    
+}
 
 ?>

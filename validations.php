@@ -190,4 +190,63 @@ function validateLogin() {
         return $data;
     }
 
+function validateChangePassword() {
+    $oldPassword = $newPassword = $repeatNewPassword = '';
+    $oldPasswordErr = $newPasswordErr = $repeatNewPasswordErr = '';
+    $valid = false;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $oldPassword = testInput(getPostvar("oldPassword"));
+            if (empty($oldPassword)) {
+                $oldPasswordErr = "Vul hier je oude wachtwoord in.";
+            }
+
+        $newPassword = testInput(getPostvar("newPassword"));
+            if (empty($newPassword)) {
+                $passwordErr = "Vul hier je nieuwe wachtwoord in.";
+            }
+            else {
+                $errors = array();
+                if (!preg_match('@[A-Z]@', $newPassword)) { 
+                    array_push($errors, "een hoofdletter");
+                }
+               
+                if (!preg_match('@[a-z]@', $newPassword)) {
+                    array_push($errors, "een kleine letter");    
+                }
+                if (!preg_match('@[0-9]@', $newPassword)) {
+                    array_push($errors, "een cijfer");
+                }
+                if (!preg_match('@[^\w]@', $newPassword)) {
+                    array_push($errors, "een speciaal teken");
+                }
+                if (strlen($newPassword) < 8) {
+                    array_push($errors, "acht tekens");
+                }
+                if (!empty($errors)) {
+                    $newPasswordErr = "Wachtwoord moet tenminste " . implode(", ", $errors) . " bevatten.";
+                }
+            }
+        
+        $repeatNewPassword = testInput(getPostvar("repeatNewPassword"));
+            if (empty($repeatNewPassword)) {
+                $repeatNewPasswordErr = "Herhaal hier je nieuwe wachtwoord.";
+            }
+            else if ($newPassword != $repeatNewPassword) {
+                $repeatNewPasswordErr = "Je wachtwoorden komen niet overeen.";
+            }
+
+        if (empty($oldPasswordError) && empty($newPasswordErr) && empty($repeatNewPasswordErr)){
+            $valid = true;
+        }
+    
+    }
+
+    return array ("oldPassword" => $oldPassword, "newPassword" => $newPassword, 
+                    "repeatNewPassword" => $repeatNewPassword, "oldPasswordErr" => $oldPasswordErr, 
+                    "newPasswordErr" => $newPasswordErr, "repeatNewPasswordErr" => $repeatNewPasswordErr,
+                    "valid" => $valid); 
+}
+
 ?>

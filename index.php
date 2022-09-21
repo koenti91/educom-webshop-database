@@ -43,6 +43,14 @@ function processRequest($page) {
                 $page = 'login';
             }
             break;
+
+        case 'changePassword':
+            $data = validateChangePassword();
+            if ($data['valid']) {
+                changePassword($data["password"]);
+                $page= 'changePwConfirmation';
+            }
+            break;
     }
 
     $data['page'] = $page;
@@ -74,6 +82,14 @@ function showContent($data) {
 
         case 'register':
             showRegisterForm($data);
+            break;
+
+        case'changepw':
+            showChangePwForm($data);
+            break;
+            
+        case 'changePwConfirmation':
+            showChangePwConfirmationMessage($data);
             break;
     }
 }
@@ -153,6 +169,8 @@ function showHeadSection($page)
             require_once('login.php');
             showLoginHeader();
             break;
+        case 'changePassword':
+            require_once('changepw.php');
         default:
             echo 'Error: Page NOT found';
     }
@@ -193,6 +211,9 @@ function showHeader($data) {
             require_once('login.php');
             showLoginHeader();
             break;
+        case 'changePassword':
+            require_once('changepw.php');
+            showChangePwHeader();
         default:
             echo 'Error: Page not found';
     }
@@ -209,6 +230,7 @@ function showMenu()
 
     if (isUserLoggedIn()) {
         echo showMenuItem("logout", "Logout " . getLoggedInUsername());
+        echo showMenuItem("changePassword", "Wachtwoord veranderen");
     } else {
         echo showMenuItem ("login", "Login");
         echo showMenuItem ("register", "Registreer");
