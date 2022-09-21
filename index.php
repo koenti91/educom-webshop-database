@@ -5,15 +5,13 @@ session_start();
 require_once ("constants.php");
 require_once ("session_manager.php");
 require_once ("validations.php");
-require_once ("user_service.php");
 require_once ("db_repository.php");
+require_once ("user_service.php");
 
 // Main
 $page = getRequestedPage();
 $data = processRequest($page);
 showResponsePage($data);
-
-
 // Functions
 
 function processRequest($page) {

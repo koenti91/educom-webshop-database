@@ -6,7 +6,7 @@ function authenticateUser($email, $password) {
     if (empty($user)) {
         return NULL;
     }
-    if (md5(trim($password)) == trim($user['password'])) {
+    if (trim($password) == trim($user['password'])) {
         $_SESSION["email"] = $user['email'];
         return $user;
     }
