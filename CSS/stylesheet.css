@@ -100,7 +100,7 @@
   .submit,
   .password,
   .password-repeat {
-    width: 100%;
+    width: 50%;
     box-sizing: border-box;
   }
   
@@ -111,7 +111,7 @@
   
   textarea {
     vertical-align: middle;
-    width: 100%;
+    width: 50%;
     height: 100px;
     box-sizing: border-box;
     font-family: inherit;
@@ -119,7 +119,7 @@
   
   .submit {
     margin-top: 20px;
-    width: 100%;
+    margin-left: 134px;
     display: inline-block;
     box-sizing: border-box;
     border: 10px rounded #3d3c42;

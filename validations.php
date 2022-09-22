@@ -5,7 +5,8 @@ function validateLogin() {
         $emailErr = $passwordErr = '';
         $valid = false;
         $name = '';
-    
+        $userId = '';
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             $email = testInput(getPostVar("email"));
@@ -30,6 +31,7 @@ function validateLogin() {
                 } else {
                     $email = $user["email"];
                     $name = $user["name"];
+                    $userId = $user["id"];
                 }
             }
         }
@@ -38,6 +40,7 @@ function validateLogin() {
                     "email" => $email, 
                     "password" => $password, 
                     "name" => $name,
+                    "userId" => $userId,
                     "emailErr" => $emailErr, 
                     "passwordErr" => $passwordErr, 
                     "valid" => $valid);
@@ -197,14 +200,14 @@ function validateChangePassword() {
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $oldPassword = testInput(getPostvar("oldPassword"));
+        $oldPassword = testInput(getPostvar("current-password"));
             if (empty($oldPassword)) {
                 $oldPasswordErr = "Vul hier je oude wachtwoord in.";
             }
 
-        $newPassword = testInput(getPostvar("newPassword"));
+        $newPassword = testInput(getPostvar("new-password"));
             if (empty($newPassword)) {
-                $passwordErr = "Vul hier je nieuwe wachtwoord in.";
+                $newPasswordErr = "Vul hier je nieuwe wachtwoord in.";
             }
             else {
                 $errors = array();
@@ -229,7 +232,7 @@ function validateChangePassword() {
                 }
             }
         
-        $repeatNewPassword = testInput(getPostvar("repeatNewPassword"));
+        $repeatNewPassword = testInput(getPostvar("new-password2"));
             if (empty($repeatNewPassword)) {
                 $repeatNewPasswordErr = "Herhaal hier je nieuwe wachtwoord.";
             }
@@ -238,9 +241,14 @@ function validateChangePassword() {
             }
 
         if (empty($oldPasswordError) && empty($newPasswordErr) && empty($repeatNewPasswordErr)){
-            $valid = true;
+            $user = authenticateUserByID(getLoggedInUserID(), $oldPassword);
+            if (empty($user)) {
+                $valid = false;
+                $oldPasswordErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
+            } else {
+                $valid = true;
+            }
         }
-    
     }
 
     return array ("oldPassword" => $oldPassword, "newPassword" => $newPassword, 

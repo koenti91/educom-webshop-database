@@ -50,6 +50,10 @@ function findUserByEmail($email) {
   return findOne("SELECT * FROM users WHERE email = '$email'");
 }
 
+function findUserByID($userId){
+    return findOne("SELECT * FROM users WHERE id = '$userId'");
+}
+
 function saveUser($name, $email, $password) {
     $conn = connectDatabase();
 
@@ -64,10 +68,10 @@ function saveUser($name, $email, $password) {
     closeDatabase($conn);
 }
 
-function changePassword($newPassword, $password, $oldPassword) {
+function changePassword($userId, $newPassword) {
     $conn = connectDatabase();
 
-    $sql = "UPDATE users SET password = '$newPassword' WHERE '$password' = '$oldPassword'";
+    $sql = "UPDATE users SET password = '$newPassword' WHERE id = $userId";
 
     if (mysqli_query($conn,$sql)) {
         echo "Wachtwoord gewijzigd.";

@@ -1,0 +1,91 @@
+<mxfile host="65bd71144e">
+    <diagram id="W66nikZ9hjhzC6HXt_UL" name="Page-1">
+        <mxGraphModel dx="1208" dy="807" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Datamodel (ERD) webshop" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="170" y="10" width="420" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Klant" style="swimlane;" parent="1" vertex="1">
+                    <mxGeometry x="310" y="150" width="140" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;id&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;klantnr&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;naam&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;e-mail&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;adres&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;postcode&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;woonplaats&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="3" vertex="1">
+                    <mxGeometry y="25" width="80" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Factuur" style="swimlane;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="360" width="140" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="id&lt;br&gt;klant_id&lt;br&gt;factuurnr&lt;br&gt;datum" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="5" vertex="1">
+                    <mxGeometry x="10" y="55" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="Factuur_regel" style="swimlane;" parent="1" vertex="1">
+                    <mxGeometry x="790" y="360" width="140" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="id&lt;br&gt;factuur_id&lt;br&gt;artikel_id&lt;br&gt;aantal" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="7" vertex="1">
+                    <mxGeometry x="20" y="50" width="70" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Artikel" style="swimlane;" parent="1" vertex="1">
+                    <mxGeometry x="310" y="600" width="140" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="id&lt;br&gt;artnr&lt;br&gt;naam&lt;br&gt;totaal" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="11" vertex="1">
+                    <mxGeometry x="14" y="50" width="50" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Detail artikel" style="swimlane;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="820" width="160" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="&lt;br&gt;naam&lt;br&gt;prijs&lt;br&gt;omschrijving" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="18" vertex="1">
+                    <mxGeometry x="10" y="40" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="Shopping Cart" style="swimlane;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="360" width="160" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="&amp;nbsp;&lt;br&gt;product_id&lt;br&gt;product_name&lt;br&gt;hoeveelheid&lt;br&gt;totaal&lt;br&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="21" vertex="1">
+                    <mxGeometry y="30" width="90" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="11" target="21" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="230" y="510" as="sourcePoint"/>
+                        <mxPoint x="280" y="460" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="18" target="11" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="230" y="840" as="sourcePoint"/>
+                        <mxPoint x="280" y="790" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="21" target="5" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="230" y="500" as="sourcePoint"/>
+                        <mxPoint x="280" y="450" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="30" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="5" target="3" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="230" y="500" as="sourcePoint"/>
+                        <mxPoint x="280" y="450" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="32" value="" style="endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="7" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="600" y="500" as="sourcePoint"/>
+                        <mxPoint x="700" y="445" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="Bestelling" style="swimlane;" vertex="1" parent="1">
+                    <mxGeometry x="70" y="360" width="160" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="&amp;nbsp;&lt;br&gt;id&lt;br&gt;product&lt;br&gt;totaal" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="33">
+                    <mxGeometry y="40" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="Klant" style="swimlane;" vertex="1" parent="1">
+                    <mxGeometry x="580" y="150" width="140" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;id&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;klantnr&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;naam&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;e-mail&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;adres&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;postcode&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;span&gt;woonplaats&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="36">
+                    <mxGeometry y="25" width="80" height="100" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

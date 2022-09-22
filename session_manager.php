@@ -1,7 +1,8 @@
 <?php
 
-function doLoginUser($name) {
+function doLoginUser($name, $userId) {
     $_SESSION['login'] = $name; 
+    $_SESSION['loggedInUserId'] = $userId;
 }
 
 function isUserLoggedIn() {
@@ -10,6 +11,10 @@ function isUserLoggedIn() {
 
 function getLoggedInUsername() {
     return $_SESSION['login'];
+}
+
+function getLoggedInUserID() {
+    return $_SESSION['loggedInUserId'];
 }
 
 function doLogoutUser() {

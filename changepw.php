@@ -32,7 +32,8 @@ function showChangePwForm($data) {
         <input class="password" type="password" name="new-password2" id="new-password2" maxlength="50" required>
         <span class="error">* '. $data["repeatNewPasswordErr"] .' </span>
         </fieldset>
-        <button class="submit" type="submit">Change password</button>
+        <button class="submit" type="submit">Wachtwoord veranderen</button>
+        <input type="hidden" name="page" value="changepw" />
     
 </form>';
 }

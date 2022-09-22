@@ -19,7 +19,7 @@ function processRequest($page) {
         case "login":
             $data = validateLogin();
             if ($data['valid']) {
-                doLoginUser($data['name']);
+                doLoginUser($data['name'], $data['userId']);
                 $page = 'home';
             }
             break;
@@ -39,7 +39,7 @@ function processRequest($page) {
         case 'register':
             $data = validateRegister();
             if ($data['valid']) {
-                saveUser($data["name"], $data["email"], $data["password"]);
+                storeUser($data["name"], $data["email"], $data["password"]);
                 $page = 'login';
             }
             break;
@@ -47,7 +47,7 @@ function processRequest($page) {
         case 'changepw':
             $data = validateChangePassword();
             if ($data['valid']) {
-                changePassword($data["newPassword"], $data["oldPassword"], $data["password"]);
+                storeNewPassword(getLoggedInUserId(), $data["newPassword"]);
                 $page= 'changePwConfirmation';
             }
             break;
@@ -144,10 +144,10 @@ function beginDocument()
     <html>';
 }
 
-function showHeadSection($page)
+function showHeadSection($data)
 {
     echo '<head> <title>';
-    switch ($page)
+    switch ($data['page'])
     {
         case 'home':
             require_once('home.php');
@@ -170,8 +170,10 @@ function showHeadSection($page)
             showLoginHeader();
             break;
         case 'changepw':
+        case 'changePwConfirmation':
             require_once('changepw.php');
             showChangePwHeader();
+            break;
         default:
             echo 'Error: Page NOT found';
     }
@@ -213,8 +215,10 @@ function showHeader($data) {
             showLoginHeader();
             break;
         case 'changepw':
+        case 'changePwConfirmation':
             require_once('changepw.php');
             showChangePwHeader();
+            break;
         default:
             echo 'Error: Page not found';
     }

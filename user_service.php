@@ -2,28 +2,39 @@
 
 function authenticateUser($email, $password) {
     $user = findUserbyEmail($email);
+    return authenticateUserByUser($user, $password);
+}
 
+ function authenticateUserByID($userId, $password) {
+    $user = findUserById($userId);
+    return authenticateUserByUser($user, $password);
+}
+ 
+function authenticateUserByUser($user, $password) {
+    var_dump($user);
     if (empty($user)) {
         return NULL;
     }
-    if (trim($password) == trim($user['password'])) {
-        $_SESSION["email"] = $user['email'];
+    if (password_verify($password, $user['password'])) {
         return $user;
     }
     return NULL;
 }
-
 function doesUserExist($email) {
     $user = findUserbyEmail($email);
     return !empty($user);
 }
 
 function storeUser($name, $email, $password) {
-    saveUser($name, $email, $password);
+    $options = [12];
+    $hashedPassword = password_hash ($password, PASSWORD_BCRYPT, $options);
+    saveUser($name, $email, $hashedPassword);
 }
 
-function storeNewPassword($password, $newPassword, $oldPassword) {
-    changePassword($password, $newPassword, $oldPassword);
+function storeNewPassword($userId, $newPassword) {
+    $options = [12];
+    $hashedPassword = password_hash ($newPassword, PASSWORD_BCRYPT, $options);
+    changePassword($userId, $hashedPassword);
 }
 
 ?>
