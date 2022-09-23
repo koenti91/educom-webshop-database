@@ -56,7 +56,7 @@ function findUserByID($userId){
 
 function saveUser($name, $email, $password) {
     $conn = connectDatabase();
-
+    
     $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
 
     if ($conn->query($sql) === TRUE) {
