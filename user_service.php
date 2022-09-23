@@ -11,7 +11,6 @@ function authenticateUser($email, $password) {
 }
  
 function authenticateUserByUser($user, $password) {
-    var_dump($user);
     if (empty($user)) {
         return NULL;
     }
