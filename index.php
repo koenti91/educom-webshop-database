@@ -7,12 +7,17 @@ require_once ("session_manager.php");
 require_once ("validations.php");
 require_once ("db_repository.php");
 require_once ("user_service.php");
+require_once ("products_service.php");
 
 // Main
 $page = getRequestedPage();
 $data = processRequest($page);
 showResponsePage($data);
 // Functions
+
+function logError($msg) {
+    echo "LOG TO SERVER: " . $msg;
+}
 
 function processRequest($page) {
     switch ($page) {
@@ -48,7 +53,7 @@ function processRequest($page) {
             $data = validateChangePassword();
             if ($data['valid']) {
                 storeNewPassword(getLoggedInUserId(), $data["newPassword"]);
-                $page= 'changePwConfirmation';
+                $page = 'changePwConfirmation';
             }
             break;
     }
@@ -91,6 +96,15 @@ function showContent($data) {
         case 'changePwConfirmation':
             showChangePwConfirmationMessage($data);
             break;
+
+        case 'webshop':
+            $data = getWebshopProducts();
+            break;
+
+        case 'detail':
+            $data = getProductDetails($id);
+            break;
+
     }
 }
 
@@ -108,15 +122,8 @@ function getRequestedPage()
     return $requested_page;
 }
 
-function showResponsePage($data)
-{
-    // if (!empty($_GET['logout'])) {
-    //     session_destroy();
-    //     $data['page'] = 'home';
-    // } else if (!empty($_SESSION['email'])) {        
-    //     $data['page'] = 'home';
-    // }
-
+function showResponsePage($data) {
+    
     beginDocument();
     showHeadSection($data);
     showBodySection($data);
@@ -174,6 +181,10 @@ function showHeadSection($data)
             require_once('changepw.php');
             showChangePwHeader();
             break;
+        case 'webshop':
+            require_once('webshop.php');
+            showWebshopHeader();
+            break;
         default:
             echo 'Error: Page NOT found';
     }
@@ -219,6 +230,10 @@ function showHeader($data) {
             require_once('changepw.php');
             showChangePwHeader();
             break;
+        case 'webshop':
+            require_once('webshop.php');
+            showWebshopHeader();
+            break;
         default:
             echo 'Error: Page not found';
     }
@@ -232,6 +247,7 @@ function showMenu()
     echo showMenuItem('home', 'Home'); 
     echo showMenuItem('about', 'About'); 
     echo showMenuItem('contact', 'Contact'); 
+    echo showMenuItem('webshop', 'Winkel');
 
     if (isUserLoggedIn()) {
         echo showMenuItem("logout", "Logout " . getLoggedInUsername());

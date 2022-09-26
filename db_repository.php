@@ -106,4 +106,19 @@ function changePassword($userId, $newPassword) {
     executeQuery($conn, $sql);
 }
 
+function getAllProducts() {
+    $conn = connectDatabase();
+
+    $sql = "SELECT id, name, description, price FROM products";
+    $result = mysqli_query($conn, $sql);
+
+    while ($row = mysqli_fetch_assoc($result) > 0) {
+        echo "id: " . $row["id"]. " Name: " . $row["name"]. " " . $row["description"]. " 
+    }
+}
+
+/*function getProductDetails () {
+
+}*/
+
 ?>
