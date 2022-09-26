@@ -8,8 +8,8 @@ function connectDatabase() {
   $dbname = "koens_webshop";
   
   $conn = mysqli_connect($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+    if (!$conn) {
+        throw new Exception("Could not connect to database." . mysqli_connect_error());
       }
 
   return $conn;
@@ -19,89 +19,91 @@ function closeDatabase($conn) {
     mysqli_close($conn);
 }
 
-function runQuery($sql, $types='', $params=array()) {
-    $conn = connectDatabase();
-
-    $stmt = mysqli_prepare($conn, $sql);
-    if(!empty ($params)) {
-    mysqli_stmt_bind_param($stmt, $types, $params);
-    }
-
-    mysqli_stmt_execute($stmt);
-    $metaResults = mysqli_stmt_result_metadata($stmt);
-    $fields = mysqli_fetch_fields($metaResults);
-    $statementParams='';
-    $column = array();
-    //build the bind_results statement dynamically so I can get the results in an array
-    foreach($fields as $field){
-        if(empty($statementParams)){
-            $statementParams.="\$column['".$field->name."']";
-        }else{
-            $statementParams.=", \$column['".$field->name."']";
+function findAll($conn, $sql) {
+    try {
+        $result = runQuery($conn, $sql);
+        $resultarray = [];
+        while ($row = mysqli_fetch_assoc($result)){
+            $resultarray [$row["id"]] = $row;
         }
+        return $resultarray;
+    } 
+    finally {
+        closeDatabase($conn);
     }
-    $statement="mysqli_stmt_bind_result(\$stmt, $statementParams);";
-    var_dump($statement);
-    eval($statement);
-    $query_result = [];
-
-    if (mysqli_stmt_num_rows($stmt) > 0) {
-      while(mysqli_stmt_fetch($stmt)) {
-        $row = array ($column);
-        var_dump($row);
-        $query_result[] = $row;
-      }
-    }
-
-    closeDatabase($conn);
-
-    return $query_result;
 }
 
-function findAll($sql) {
-  return runQuery($sql);
+function runQuery($conn, $sql) {
+
+    $result = mysqli_query($conn, $sql);
+        
+    if(!$result) {
+        throw new Exception("Find user query failed, SQL: " . $sql. "error" .mysqli_error($conn));
+    }
+    return $result;
 }
 
-function findOne($sql, $types, $params) {
-  $result =  runQuery($sql, $types, $params);
+function executeQuery($conn, $sql) { 
+    try {
+        runQuery($conn, $sql);
+        
+        return mysqli_insert_id($conn);
+    }
 
-  if (!empty($result[0])) return $result[0];
+    finally {
+        closeDatabase($conn);
+    }
+}
+
+function findOne($conn, $sql) {
+    try {
+        $result = runQuery($conn, $sql);
+        
+        return mysqli_fetch_assoc($result);
+    }
+
+    finally {
+        closeDatabase($conn);
+    }
 }
 
 function findUserByEmail($email) {
-  return findOne("SELECT * FROM users WHERE email = ?", "s", array($email));
+    $conn = connectDatabase();
+
+    $email = mysqli_real_escape_string($conn, $email);
+    $sql = "SELECT * FROM users WHERE email = '". $email ."'";
+
+    return findOne($conn, $sql);
 }
 
 function findUserByID($userId){
-    return findOne("SELECT * FROM users WHERE id = ?", "i", array($userId));
+    $conn = connectDatabase();
+
+    $userId = mysqli_real_escape_string($conn, $userId);
+    $sql = "SELECT * FROM users WHERE id = '". $userId ."'";
+    
+    return findOne($conn, $sql);
 }
 
 function saveUser($name, $email, $password) {
     $conn = connectDatabase();
     
+    $name = mysqli_real_escape_string($conn, $name);
+    $email = mysqli_real_escape_string($conn, $email);
+    $password = mysqli_real_escape_string($conn, $password);
     $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Registratie gelukt!";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-    
-    closeDatabase($conn);
+   return executeQuery($conn, $sql);
 }
 
 function changePassword($userId, $newPassword) {
     $conn = connectDatabase();
 
+    $newPassword = mysqli_real_escape_string($conn, $newPassword);
+    $userId = mysqli_real_escape_string($conn, $userId);
     $sql = "UPDATE users SET password = '$newPassword' WHERE id = $userId";
 
-    if (mysqli_query($conn,$sql)) {
-        echo "Wachtwoord gewijzigd.";
-    } else {
-        echo "Error updating password: " .mysqli_error($conn);
-    }
-
-    closeDatabase($conn);
+    executeQuery($conn, $sql);
 }
 
 ?>
