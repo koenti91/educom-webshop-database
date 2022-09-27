@@ -41,11 +41,15 @@
     padding: 14px 16px;
     text-decoration: none;
     color: #fefbf6;
+    margin:0 4px 0 4px;
   }
   
   h2,
   h3,
-  .bedankt {
+  h4,
+  .bedankt,
+  img
+  {
     padding-left: 10px;
   }
   
@@ -151,4 +155,19 @@
   .input-group + .input-group {
     margin-top: 10px;
   }
-  
+
+  .list {
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .shop-products {
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 16px 0 16px;
+  }
+
+  img {
+    border-radius: 20px;
+    border-color: #3d3c42 3px transparent;
+  }

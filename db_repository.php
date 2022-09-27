@@ -113,5 +113,12 @@ function getAllProducts() {
 
     return findAll($conn, $sql);
 }
+function findProductByID($productId){
+    $conn = connectDatabase();
 
+    $productId = mysqli_real_escape_string($conn, $productId);
+    $sql = "SELECT * FROM products WHERE id = '". $productId ."'";
+    
+    return findOne($conn, $sql);
+}
 ?>

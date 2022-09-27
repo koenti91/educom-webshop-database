@@ -5,13 +5,12 @@ session_start();
 require_once ("constants.php");
 require_once ("session_manager.php");
 require_once ("validations.php");
-require_once ("db_repository.php");
-require_once ("user_service.php");
 require_once ("products_service.php");
 
 // Main
 $page = getRequestedPage();
 $data = processRequest($page);
+var_dump($data);
 showResponsePage($data);
 // Functions
 
@@ -56,9 +55,26 @@ function processRequest($page) {
                 $page = 'changePwConfirmation';
             }
             break;
+    
+        case 'webshop':
+            $data = getWebshopProducts();
+            break;
+
+        case 'detail':
+            $id = getUrlVar("id");
+            $data = getProductDetails($id);
+            break;
     }
 
     $data['page'] = $page;
+    $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 'webshop' => 'Shop Headwear');
+    if(isUserLoggedIn()) {
+        $data['menu'] ['logout'] = 'Logout ' . getLoggedInUsername();
+        $data['menu'] ['changepw'] = 'Verander wachtwoord';
+    } else {
+        $data['menu'] ['login'] = 'Login';
+        $data['menu'] ['register'] = 'Registreren';
+    }
 
     return $data;
 }
@@ -98,15 +114,13 @@ function showContent($data) {
             break;
 
         case 'webshop':
-            $data = getWebshopProducts();
-            //showWebshopContent($data['id'], $data['filename'], $data['name'], $data['price']);
-            showWebshopContent($products);
+            showWebshopContent($data);
             break;
 
         case 'detail':
-            $data = getProductDetails($id);
+            require_once('detail.php');
+            showDetailContent($data);
             break;
-
     }
 }
 
@@ -184,6 +198,7 @@ function showHeadSection($data)
             showChangePwHeader();
             break;
         case 'webshop':
+        case 'detail':
             require_once('webshop.php');
             showWebshopHeader();
             break;
@@ -197,7 +212,7 @@ function showBodySection($data)
 {
     echo '<body>';
     showHeader($data);
-    showMenu();
+    showMenu($data);
     showContent($data);
     showFooter();
     echo '</body>';
@@ -233,6 +248,7 @@ function showHeader($data) {
             showChangePwHeader();
             break;
         case 'webshop':
+        case 'detail':
             require_once('webshop.php');
             showWebshopHeader();
             break;
@@ -242,23 +258,11 @@ function showHeader($data) {
     echo '</header>';
 }
 
-function showMenu()
-{
+function showMenu($data) {
     echo '<div class="menu"><ul class="nav-tabs">';
-
-    echo showMenuItem('home', 'Home'); 
-    echo showMenuItem('about', 'About'); 
-    echo showMenuItem('contact', 'Contact'); 
-    echo showMenuItem('webshop', 'Aanbiedingen');
-
-    if (isUserLoggedIn()) {
-        echo showMenuItem("logout", "Logout " . getLoggedInUsername());
-        echo showMenuItem("changepw", "Wachtwoord veranderen");
-    } else {
-        echo showMenuItem ("login", "Login");
-        echo showMenuItem ("register", "Registreer");
+    foreach($data['menu'] as $link => $label) {
+        echo showMenuItem($link, $label);
     }
-
     echo '</ul></div>';
 }
 

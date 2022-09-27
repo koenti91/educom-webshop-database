@@ -1,5 +1,7 @@
 <?php
 
+require_once ("user_service.php");
+
 function validateLogin() {
         $email = $password = '';
         $emailErr = $passwordErr = '';
