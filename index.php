@@ -99,7 +99,8 @@ function showContent($data) {
 
         case 'webshop':
             $data = getWebshopProducts();
-            showWebshopContent($data['id'], $data);
+            //showWebshopContent($data['id'], $data['filename'], $data['name'], $data['price']);
+            showWebshopContent($products);
             break;
 
         case 'detail':
