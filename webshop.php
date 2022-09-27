@@ -14,8 +14,6 @@ function showWebshopContent($data) {
     echo '</div>';
 }
 
-
-
 function showWebshopProduct($product) {
     echo '<a class="shop-products" href="index.php?page=detail&id='.$product['id'].'">';
     echo '<h4>'.$product['name'].'</h4>';
