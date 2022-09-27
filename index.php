@@ -99,6 +99,7 @@ function showContent($data) {
 
         case 'webshop':
             $data = getWebshopProducts();
+            showWebshopContent($data['id'], $data);
             break;
 
         case 'detail':
@@ -247,7 +248,7 @@ function showMenu()
     echo showMenuItem('home', 'Home'); 
     echo showMenuItem('about', 'About'); 
     echo showMenuItem('contact', 'Contact'); 
-    echo showMenuItem('webshop', 'Winkel');
+    echo showMenuItem('webshop', 'Aanbiedingen');
 
     if (isUserLoggedIn()) {
         echo showMenuItem("logout", "Logout " . getLoggedInUsername());
