@@ -15,6 +15,5 @@ function showProductDetail($product) {
     echo '<img src="Images/'.$product['filename'].'" alt="'.$product['name'].'" width="170px">'; 
     echo '<p> €'.$product['price'] . '</p>';
     echo '<p>'.$product['description'].'</p>';
-     
 }
 ?>

@@ -67,15 +67,15 @@ function processRequest($page) {
     }
 
     $data['page'] = $page;
-    $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 'webshop' => 'Shop Headwear');
+    $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 'webshop' => 'Shop Headwear', 'shoppingCart' => 'Winkelmand');
     if(isUserLoggedIn()) {
         $data['menu'] ['logout'] = 'Logout ' . getLoggedInUsername();
         $data['menu'] ['changepw'] = 'Verander wachtwoord';
     } else {
+        $data['menu'] ['shoppingCart'] = 'Winkelmand';
         $data['menu'] ['login'] = 'Login';
         $data['menu'] ['register'] = 'Registreren';
     }
-
     return $data;
 }
 
@@ -120,6 +120,11 @@ function showContent($data) {
         case 'detail':
             require_once('detail.php');
             showDetailContent($data);
+            break;
+
+        case 'shoppingCart':
+            require_once('shopping_cart.php');
+            showShoppingCart($data);
             break;
     }
 }
@@ -202,6 +207,10 @@ function showHeadSection($data)
             require_once('webshop.php');
             showWebshopHeader();
             break;
+        case 'shoppingCart':
+            require_once('shopping_cart.php');
+            showShoppingCartHeader();
+            break;
         default:
             echo 'Error: Page NOT found';
     }
@@ -251,6 +260,10 @@ function showHeader($data) {
         case 'detail':
             require_once('webshop.php');
             showWebshopHeader();
+            break;
+        case 'shoppingCart';
+            require_once('shopping_cart.php');
+            showShoppingCartHeader();
             break;
         default:
             echo 'Error: Page not found';
