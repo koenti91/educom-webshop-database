@@ -29,4 +29,6 @@ function GetProductDetails($productId) {
     return array("product" => $product, "genericErr" => $genericErr);
 }
 
+
+
 ?>
