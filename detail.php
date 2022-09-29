@@ -11,7 +11,7 @@ function showDetailContent($data) {
 }
 
 function showProductDetail($product) {
-    echo '<h4>'.$product['name'].'</h4>';
+    echo '<h4 class ="detail-name">'.$product['name'].'</h4>';
     echo '<img src="Images/'.$product['filename'].'" alt="'.$product['name'].'" width="170px">'; 
     echo '<p> €'.$product['price'] . '</p>';
     echo '<p>'.$product['description'].'</p>';

@@ -7,10 +7,13 @@ function showWebshopHeader() {
 }
 
 function showWebshopContent($data) {
-
+    echo' <div class="product-overview">';
+    
     foreach($data['products'] as $product) {
         showWebshopProduct($product);
     }
+
+    echo '</div>';
 }
 
 function showWebshopProduct($product) {
