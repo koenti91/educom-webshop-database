@@ -11,6 +11,7 @@ require_once ("products_service.php");
 $page = getRequestedPage();
 $data = processRequest($page);
 var_dump($data);
+var_dump($_SESSION);
 showResponsePage($data);
 // Functions
 
@@ -57,17 +58,25 @@ function processRequest($page) {
             break;
     
         case 'webshop':
+            handleActionForm();
             $data = getWebshopProducts();
             break;
 
         case 'detail':
+            handleActionForm();
             $id = getUrlVar("id");
             $data = getProductDetails($id);
+            break;
+
+        case 'shoppingCart':
+            handleActionForm();
+            $data = getShoppingCartRows();
             break;
     }
 
     $data['page'] = $page;
-    $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 'webshop' => 'Shop Headwear', 'shoppingCart' => 'Winkelmand');
+    $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 
+                    'webshop' => 'Shop Headwear', 'shoppingCart' => 'Winkelmand');
     if(isUserLoggedIn()) {
         $data['menu'] ['logout'] = 'Logout ' . getLoggedInUsername();
         $data['menu'] ['changepw'] = 'Verander wachtwoord';
@@ -294,5 +303,20 @@ function endDocument()
 {
     echo '</html>';
 }
+ function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {
+    echo '<form method="post" action="index.php">';
+    if ($showQuantity) {
+        $cart = getShoppingCart();
+        $currentValue = getArrayVar($cart, $productId, 1);
+        echo '<input type="text" name="quantity" class="set-quantity" value="'.$currentValue.'" />';
+    }
+    if ($productId != null) {
+        echo '<input type="hidden" name="product-id" value="'.$productId.'">';
+    }
+    echo '<input type="hidden" name="action" value="' . $action .'">';  
+    echo '<input type="hidden" name="page" value="'. $nextPage .'">';  
+    echo '<input type="submit" name="submit" class="btn-btn" value= "'.$buttonLabel.'">';
+    echo '</form>';
 
+ }
 ?>

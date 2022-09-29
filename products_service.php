@@ -29,49 +29,51 @@ function GetProductDetails($productId) {
     return array("product" => $product, "genericErr" => $genericErr);
 }
 
-function addToCart() {
-    if(isset($_POST["add-to-cart"])) {
+function handleActionForm() {
 
-        if(isset($_SESSION["shopping-cart"])) {
-            $productArrayId = array_column($_SESSION["shopping-cart"], "productId");
+    $action = getPostVar("action");
+    switch ($action) {
+    case "add-to-cart":
+        $productId = getPostVar("product-id");
+        $quantity = getPostVar("quantity");
 
-            if(!in_array($_GET["id"], $productArrayId)) {
-                $count = count($_SESSION["shopping-cart"]);
-                $productArray = array(
-                    'productId' => $_GET["id"],
-                    'productName' => $_POST["hidden-name"],
-                    'productPrice' => $_POST["hidden-price"],
-                    'productQuantity' => $_POST["quantity"]
-                );
-                $_SESSION["shopping-cart"][$count] = $productArray;
-             } else {
-                echo '<p>Dit product is al toegevoegd.</p>';
-                //redirect;
+        addToCart($productId, $quantity);
+        break;
+
+    case "delete":
+        $productId = getPostVar("product-id");
+        deleteFromCart($productId);
+        break;
+    }
+}
+
+function getShoppingCartRows() {
+    $cartRows = array();
+    $total = 0;
+    $genericErr = "";
+
+    try {
+        $cart = getShoppingCart();
+        $products = getAllProducts();
+
+        foreach ($cart as $productId => $quantity) {
+            $product = getArrayVar($products, $productId, null);
+            if ($product == null) {
+                continue;
             }
-
-        } else {
-        $productArray = array (
-            'productId' => $_GET["id"],
-            'productName' => $_POST["hidden-name"],
-            'productPrice' => $_POST["hidden-price"],
-            'productQuantity' => $_POST["hidden-quantity"]
-        );
-        $_SESSION["shopping-cart"] [0] = $productArray;
+            $priceInCents = intVal($product['price'] * 100); 
+            $subtotal = $priceInCents * $quantity;
+            $cartRow = array( 'productId' => $productId, 'quantity' => $quantity, 'subtotal' => $subtotal, 
+                              'price' => $priceInCents, 'name' => $product['name'], 'filename' => $product['filename']);
+            $cartRows[] = $cartRow;
+            $total += $subtotal; // $total = $total + $subtotal;
         }
+    } catch (Exception $exception) {
+        $genericErr = "Excuses, op dit moment kunnen er geen producten worden weergegeven.";
+        logError("GetAllProducts failed" .$exception -> getMessage());
     }
 
-    if(isset($_GET["action"])) {
-        
-        if ($_GET["action"] == "delete") {
-            foreach($_SESSION["shopping-cart"] as $keys => $values) {
-                if ($values["productId"] == $_GET["id "]) {
-                    unset($_SESSION["shopping-cart"] [$keys]);
-                    echo '<p>Product uit mandje verwijderd.</p>';
-                    //redirect
-                }
-            }
-        }
-    }
+    return array("cartRows" => $cartRows, "total" => $total, "genericErr" => $genericErr);
 }
 
 ?>

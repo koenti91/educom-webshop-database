@@ -3,6 +3,7 @@
 function doLoginUser($name, $userId) {
     $_SESSION['login'] = $name; 
     $_SESSION['loggedInUserId'] = $userId;
+    $_SESSION['shoppingCart'] = array();  // { productIdA => quantity, productIdB => quantity, ... }
 }
 
 function isUserLoggedIn() {
@@ -21,4 +22,15 @@ function doLogoutUser() {
     unset($_SESSION['login']);
 }
 
+function getShoppingCart() {
+    return $_SESSION['shoppingCart'];
+}
+
+function addToCart($productId, $quantity) {
+    $_SESSION['shoppingCart'][$productId] = $quantity; 
+}
+
+function deleteFromCart($productId) {   
+    unset($_SESSION['shoppingCart'][$productId]);
+}
 ?>

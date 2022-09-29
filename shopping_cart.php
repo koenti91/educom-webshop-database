@@ -3,9 +3,11 @@
         echo 'Winkelmand';
     }
     
-    function showShoppingCart($product) {
-        echo '<h3>Winkelmand:</h3>
-                <div class="table-responsive">
+    function showShoppingCart($data) {
+
+        echo '<h3>Winkelmand:</h3>';
+        if (!empty($data['cartRows'])) {
+            echo '<div class="table-responsive">
                     <table class="table-bordered">
                         <tr>
                             <th>Product</th>
@@ -15,30 +17,39 @@
                             <th>Verwijder</th>
                         </tr>';
                 
-        if(!empty($_SESSION["shopping-cart"])) {
-            $none = 0;
-            foreach($_SESSION["shopping-cart"] as $keys => $values); {
-        
-        
-        echo '<tr>
-            <td><img src="Images/'.$product['filename'].'" alt="'.$product['name'].'" 
-            width="50px"><br>'.$values["productName"].'</td>
-            <td>'.$values["productQuantity"].'</td>
-            <td>'.$values["productPrice"].'</td>
-            <td>'.number_format($values["productQuantity"] * $values["productPrice"], 2).'</td>
-            <td><a href="index.php?action=delete&id='.$values["productId"].'">Remove</a></td>
-            </tr>'
-            
-            .$total = $none + ($values["productQuantity"] * $values["productPrice"]);
-            }
+            foreach($data['cartRows'] as $cartRow) {
+                showCartRow($cartRow);
+            }      
+                        
             echo '<tr>
                     <td>Totaal</td>
-                    <td> € '.number_format($total, 2).'</td>
+                    <td></td>
+                    <td></td>
+                    <td> € '.number_format($data['total'] / 100, 2).'</td>
                     <td></td>
                   </tr>
             </table>
             </div>';
             
+        } else {
+                // wat als leeg
         }
     }
+     function showCartRow($cartRow) {
+        echo '<tr>
+            <td><img src="Images/'.$cartRow['filename'].'" alt="'.$cartRow['name'].'" 
+            width="50px"/><br>'.$cartRow["name"].'</td>
+            <td>';
+//            addActionForm("add-to-cart", "Bijwerken", "shoppingCart", $cartRow["productId"], true);
+            addActionForm("decrease_quantity", "-", "shoppingCart", $cartRow["productId"]);
+            echo $cartRow['quantity'];
+            addActionForm("increase_quantity", "+", "shoppingCart", $cartRow["productId"]);
+
+            echo '</td>
+            <td> &euro; '.number_format($cartRow["price"] / 100, 2).'</td>
+            <td> &euro; '.number_format($cartRow['subtotal'] / 100, 2).'</td><td>';
+        addActionForm("delete", "Verwijder", "shoppingCart", $cartRow["productId"]);
+        echo '</td></tr>';
+
+     }
 ?>
