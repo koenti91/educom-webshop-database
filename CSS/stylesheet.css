@@ -201,6 +201,10 @@
     height: 50px;
   }
 
+  .table-responsive {
+    text-align: center;
+  }
+
   table {
     width: 60%;
     border-width: 2px; 
@@ -221,6 +225,12 @@
     margin-left: 180px;
   }
  
-.list {
+  .list {
   text-align: center;
-}
+  }
+
+  .pay-button {
+  margin-left: 350px;
+  margin-bottom: 20px;
+  width: 200px;
+  }

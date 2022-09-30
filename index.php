@@ -72,6 +72,13 @@ function processRequest($page) {
             handleActionForm();
             $data = getShoppingCartRows();
             break;
+
+        case 'confirm_order':
+            if(!empty($data["order"])) {
+                storeOrder($data["userId"], $data["productId"], $data["quantity"], $data["price"], $data["subtotal"], $data["total"]);
+                $page = 'order_confirmation';
+            break;
+        }
     }
 
     $data['page'] = $page;
@@ -135,6 +142,11 @@ function showContent($data) {
             require_once('shopping_cart.php');
             showShoppingCart($data);
             break;
+
+        case 'confirm_order':
+            showOrderConfirmation();
+            break;
+        
     }
 }
 
@@ -217,6 +229,7 @@ function showHeadSection($data)
             showWebshopHeader();
             break;
         case 'shoppingCart':
+        case 'confirm_order':
             require_once('shopping_cart.php');
             showShoppingCartHeader();
             break;

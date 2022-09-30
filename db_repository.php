@@ -38,7 +38,7 @@ function runQuery($conn, $sql) {
     $result = mysqli_query($conn, $sql);
         
     if(!$result) {
-        throw new Exception("Find user query failed, SQL: " . $sql. "error" .mysqli_error($conn));
+        throw new Exception("Query failed, SQL: " . $sql. "error" .mysqli_error($conn));
     }
     return $result;
 }
@@ -121,4 +121,13 @@ function findProductByID($productId){
     
     return findOne($conn, $sql);
 }
+
+function saveOrder($userId, $productId, $quantity, $price, $subtotal, $total) {
+    $conn = connectDatabase();
+
+    $sql = "INSERT INTO orders (user_id, product_id, quantity, price, subtotal, grand_total) VALUES ('$userId, '$productId', '$quantity', '$price, '$subtotal', '$total)";
+
+    return executeQuery($conn, $sql);
+}
+
 ?>

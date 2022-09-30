@@ -78,7 +78,7 @@ function showContactThanks ($data) {
         echo "<br>";
         echo ' Voorkeur voor: ' . PREFERRED[$data["preferred"]];
         echo "<br>";
-        echo ' Opmerking: ' . $data["question"];echo '
-        </div>';
+        echo ' Opmerking: ' . $data["question"];
+        echo '</div>';
 }
 ?>

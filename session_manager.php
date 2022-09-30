@@ -33,4 +33,8 @@ function addToCart($productId, $quantity) {
 function deleteFromCart($productId) {   
     unset($_SESSION['shoppingCart'][$productId]);
 }
+
+function emptyCart($productId) {
+    unset($_SESSION['shoppingCart'][$productId]);
+}
 ?>

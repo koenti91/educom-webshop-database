@@ -76,4 +76,8 @@ function getShoppingCartRows() {
     return array("cartRows" => $cartRows, "total" => $total, "genericErr" => $genericErr);
 }
 
+function storeOrder($userId, $productId, $quantity, $price, $subtotal, $total) {
+    saveOrder($userId, $productId, $quantity, $price, $subtotal, $total);
+}
+
 ?>
