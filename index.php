@@ -144,7 +144,8 @@ function showContent($data) {
             break;
 
         case 'confirm_order':
-            showOrderConfirmation();
+            require_once('order_confirmation.php');
+            showOrderConfirmation($data);
             break;
         
     }
@@ -229,9 +230,12 @@ function showHeadSection($data)
             showWebshopHeader();
             break;
         case 'shoppingCart':
-        case 'confirm_order':
             require_once('shopping_cart.php');
             showShoppingCartHeader();
+            break;
+        case 'confirm_order':
+            require_once('order_confirmation.php');
+            showOrderConfirmationHeader();
             break;
         default:
             echo 'Error: Page NOT found';
@@ -286,6 +290,10 @@ function showHeader($data) {
         case 'shoppingCart';
             require_once('shopping_cart.php');
             showShoppingCartHeader();
+            break;
+        case 'confirm_order';
+            require_once('order_confirmation.php');
+            showOrderConfirmationHeader();
             break;
         default:
             echo 'Error: Page not found';
