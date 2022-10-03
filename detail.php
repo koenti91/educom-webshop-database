@@ -17,4 +17,5 @@ function showProductDetail($product) {
     echo '<p>'.$product['description'].'</p>';
     addActionForm("add-to-cart", "Toevoegen aan mandje", "webshop", $product['id'], true);
 }
+
 ?>

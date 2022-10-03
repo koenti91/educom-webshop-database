@@ -53,9 +53,7 @@
 
      function showPayButton($data) {
         if (!empty ($data['cartRows'])) {
-            echo '<form method="post" action="index.php">';
-            echo '<input type="submit" name="pay" class="pay-button" value="Door naar afrekenen">';
-            echo '<input type="hidden" name="page" value="confirm_order" />';
+            addActionForm("order", "Door naar afrekenen", "confirm_order");
         }
      }
 ?>

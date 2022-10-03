@@ -74,11 +74,8 @@ function processRequest($page) {
             break;
 
         case 'confirm_order':
-            if(!empty($data["order"])) {
-                storeOrder($data["userId"], $data["productId"], $data["quantity"], $data["price"], $data["subtotal"], $data["total"]);
-                $page = 'order_confirmation';
+            handleActionForm();
             break;
-        }
     }
 
     $data['page'] = $page;

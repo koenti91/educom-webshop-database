@@ -44,6 +44,12 @@ function handleActionForm() {
         $productId = getPostVar("product-id");
         deleteFromCart($productId);
         break;
+    
+    case "order":
+        $userId = getLoggedInUserID();
+        $data = getShoppingCartRows();
+        storeOrder($userId, $data["cartRows"]);
+        break;
     }
 }
 
@@ -76,8 +82,16 @@ function getShoppingCartRows() {
     return array("cartRows" => $cartRows, "total" => $total, "genericErr" => $genericErr);
 }
 
-function storeOrder($userId, $productId, $quantity, $price, $subtotal, $total) {
-    saveOrder($userId, $productId, $quantity, $price, $subtotal, $total);
+function storeOrder($userId, $cartRows) {
+    
+    
+    try {
+    saveOrder($userId, $cartRows);
+    emptyCart();
+   } catch (Exception $exception) {
+        echo 'Excuses, op dit moment kunnen er geen producten worden weergegeven.';
+        logError("saveOrder failed" .$exception -> getMessage());
+   }
 }
 
 ?>

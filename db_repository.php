@@ -43,15 +43,21 @@ function runQuery($conn, $sql) {
     return $result;
 }
 
-function executeQuery($conn, $sql) { 
+function executeQuery($conn, $sql, $closeConnection = true) { 
     try {
         runQuery($conn, $sql);
         
         return mysqli_insert_id($conn);
     }
 
+    catch (Exception $e) {
+        $closeConnection = true;
+        throw $e;
+    }
     finally {
-        closeDatabase($conn);
+        if ($closeConnection) {
+            closeDatabase($conn);
+        }
     }
 }
 
@@ -122,12 +128,18 @@ function findProductByID($productId){
     return findOne($conn, $sql);
 }
 
-function saveOrder($userId, $productId, $quantity, $price, $subtotal, $total) {
+function saveOrder($userId, $cartRows) {
     $conn = connectDatabase();
 
-    $sql = "INSERT INTO orders (user_id, product_id, quantity, price, subtotal, grand_total) VALUES ('$userId, '$productId', '$quantity', '$price, '$subtotal', '$total)";
+    $sql = "INSERT INTO orders (user_id, date) VALUES ('$userId, CURRENT_DATE())";
 
-    return executeQuery($conn, $sql);
+    $orderId = executeQuery($conn, $sql, false);
+
+    foreach($cartRows as $cartRow) {
+        $sql = " INSERT INTO order_products (order_id, product_id, quantity) VALUES ($orderId, ".$cartRow('productId').", ".$cartRow['quantity'].")";
+        executeQuery($conn, $sql, false);
+    }
+    closeDatabase($conn);
 }
 
 ?>

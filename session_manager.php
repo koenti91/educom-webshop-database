@@ -34,7 +34,7 @@ function deleteFromCart($productId) {
     unset($_SESSION['shoppingCart'][$productId]);
 }
 
-function emptyCart($productId) {
-    unset($_SESSION['shoppingCart'][$productId]);
+function emptyCart() {
+    $_SESSION['shoppingCart'] = array();
 }
 ?>
