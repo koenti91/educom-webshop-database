@@ -131,12 +131,12 @@ function findProductByID($productId){
 function saveOrder($userId, $cartRows) {
     $conn = connectDatabase();
 
-    $sql = "INSERT INTO orders (user_id, date) VALUES ('$userId, CURRENT_DATE())";
+    $sql = "INSERT INTO orders (user_id, date) VALUES ($userId, CURRENT_DATE())";
 
     $orderId = executeQuery($conn, $sql, false);
 
     foreach($cartRows as $cartRow) {
-        $sql = " INSERT INTO order_products (order_id, product_id, quantity) VALUES ($orderId, ".$cartRow('productId').", ".$cartRow['quantity'].")";
+        $sql = " INSERT INTO order_products (order_id, product_id, quantity, price) VALUES ($orderId, ".$cartRow['productId'].", ".$cartRow['quantity'].", ".($cartRow['price']/100).")";
         executeQuery($conn, $sql, false);
     }
     closeDatabase($conn);

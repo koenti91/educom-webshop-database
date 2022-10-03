@@ -30,7 +30,7 @@ function GetProductDetails($productId) {
 }
 
 function handleActionForm() {
-
+    $data = NULL;
     $action = getPostVar("action");
     switch ($action) {
     case "add-to-cart":
@@ -48,9 +48,10 @@ function handleActionForm() {
     case "order":
         $userId = getLoggedInUserID();
         $data = getShoppingCartRows();
-        storeOrder($userId, $data["cartRows"]);
+        $data = storeOrder($userId, $data["cartRows"]);
         break;
     }
+    return $data;
 }
 
 function getShoppingCartRows() {
@@ -83,15 +84,16 @@ function getShoppingCartRows() {
 }
 
 function storeOrder($userId, $cartRows) {
-    
-    
+    $genericErr = "";
+
     try {
     saveOrder($userId, $cartRows);
     emptyCart();
    } catch (Exception $exception) {
-        echo 'Excuses, op dit moment kunnen er geen producten worden weergegeven.';
+        $genericErr = 'Excuses, op dit moment lukt het niet om je bestelling te verwerken.';
         logError("saveOrder failed" .$exception -> getMessage());
    }
+   return array("genericErr" => $genericErr);
 }
 
 ?>

@@ -74,18 +74,18 @@ function processRequest($page) {
             break;
 
         case 'confirm_order':
-            handleActionForm();
+            $data = handleActionForm();
             break;
     }
 
     $data['page'] = $page;
     $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 
-                    'webshop' => 'Shop Headwear', 'shoppingCart' => 'Winkelmand');
+                    'webshop' => 'Shop Headwear');
     if(isUserLoggedIn()) {
         $data['menu'] ['logout'] = 'Logout ' . getLoggedInUsername();
         $data['menu'] ['changepw'] = 'Verander wachtwoord';
-    } else {
         $data['menu'] ['shoppingCart'] = 'Winkelmand';
+    } else {
         $data['menu'] ['login'] = 'Login';
         $data['menu'] ['register'] = 'Registreren';
     }
@@ -93,6 +93,7 @@ function processRequest($page) {
 }
 
 function showContent($data) {
+    echo '<div class="error">'.getArrayVar($data, "genericErr").'</div>';
     switch ($data['page']) {
         case 'home':
             showHomeContent($data);
@@ -322,6 +323,9 @@ function endDocument()
     echo '</html>';
 }
  function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {
+    if (!isUserLoggedIn()) {
+        return;
+    }
     echo '<form method="post" action="index.php">';
     if ($showQuantity) {
         $cart = getShoppingCart();
