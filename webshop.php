@@ -25,6 +25,4 @@ function showWebshopProduct($product) {
     echo '</div>';
 }
 
-
-
 ?>

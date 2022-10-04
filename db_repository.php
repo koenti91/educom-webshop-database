@@ -142,4 +142,22 @@ function saveOrder($userId, $cartRows) {
     closeDatabase($conn);
 }
 
+function findDeliveryAddress($userId) {
+    $conn = connectDatabase();
+
+    $sql = "SELECT * FROM delivery_address WHERE id = '".$userId."'";
+
+    return findOne($conn, $sql);
+}
+
+function saveDeliveryAddress($userId, $deliveryRow) {
+    $conn = connectDatabase();
+
+    $sql = "INSERT INTO delivery_address (user_id, address, zip_code, city, phone) VALUES ($userId, ".$deliveryRow['address']."," .$deliveryRow['zipCode']."," .$deliveryRow['city']."," .$deliveryRow['phone']."";
+    executeQuery($conn, $sql, false);
+
+    closeDatabase($conn);
+}
+
+
 ?>

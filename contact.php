@@ -63,7 +63,7 @@ function showContactForm($data) {
             </form> ';
 }
 
-function showContactThanks ($data) {
+function showContactThanks($data) {
     echo
         '<p class="bedankt">Bedankt voor het invullen. Ik neem zo snel mogelijk contact met je op!</p>
         <h2>Jouw gegevens:</h2>

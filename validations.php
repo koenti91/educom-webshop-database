@@ -259,4 +259,48 @@ function validateChangePassword() {
                     "valid" => $valid); 
 }
 
+function validateDeliveryAddress() {
+    $address = $zipCode = $city = $phone = '';
+    $addressErr = $zipCodeErr = $cityErr = $phoneErr = '';
+    $valid = false;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $address = testInput(getPostVar("address"));
+        if (empty($address)) {
+        $valid = false;
+        $addressErr = "Vul een adres in.";
+        }
+
+        $zipCode = testInput(getPostVar("zipCode"));
+        if (empty($zipCode)) {
+            $valid = false;
+            $zipCodeErr = "Vul een postcode in.";
+        } else if (!preg_match("/^[0-9]{4}\s[A-Z]{2}$/",$zipCode)) {
+            $zipCodeErr = "Vul je postcode in volgens dit formaat: 1234AB.";
+        }
+
+        $city = testInput(getPostVar("city"));
+        if (empty($city)) {
+            $valid = false;
+            $cityErr = "Vul een woonplaats in.";
+        } else if (!preg_match("/^0([0-9]{9})$/",$phone)) {
+            $phoneErr = "Vul een geldig telefoonnummer in.";
+        }
+
+        $phone = testInput(getPostVar("phone"));
+        if(empty($phone)) {
+            $valid = false;
+            $addressErr = "Vul een telefoonnummer in.";
+        }
+        
+        if (empty($addressErr) && empty($zipCodeErr) && empty($cityErr) && empty($phoneErr)) {
+            $valid = true;
+        }
+
+    return array ("address" => $address, "zipCode" => $zipCode, "city" => $city, "phone" => $phone,
+                    "addressErr" => $addressErr, "zipCodeErr" => $zipCodeErr, "cityErr" => $cityErr, 
+                    "phoneErr" => $phoneErr, "valid" => $valid);
+    }   
+}
 ?>
