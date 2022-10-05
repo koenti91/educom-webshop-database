@@ -128,36 +128,45 @@ function findProductByID($productId){
     return findOne($conn, $sql);
 }
 
-function saveOrder($userId, $cartRows) {
+function saveOrder($userId, $deliveryAddress, $cartRows) {
     $conn = connectDatabase();
-
-    $sql = "INSERT INTO orders (user_id, date) VALUES ($userId, CURRENT_DATE())";
+    
+    $sql = "INSERT INTO orders (user_id, date, address, zip_code, city, phone) VALUES ($userId, CURRENT_DATE(), '".$deliveryAddress['address']."', '" .$deliveryAddress['zip_code']."', '" .$deliveryAddress['city']."', '" .$deliveryAddress['phone']."')";
 
     $orderId = executeQuery($conn, $sql, false);
 
     foreach($cartRows as $cartRow) {
-        $sql = " INSERT INTO order_products (order_id, product_id, quantity, price) VALUES ($orderId, ".$cartRow['productId'].", ".$cartRow['quantity'].", ".($cartRow['price']/100).")";
+        $sql = " INSERT INTO order_products (order_id, product_id, quantity, price) VALUES ($orderId, '" .$cartRow['productId']."', '" .$cartRow['quantity']."', '" .($cartRow['price']/100).")'";
         executeQuery($conn, $sql, false);
     }
     closeDatabase($conn);
 }
 
-function findDeliveryAddress($userId) {
+function findDeliveryAddresses($userId) {
     $conn = connectDatabase();
 
-    $sql = "SELECT * FROM delivery_address WHERE id = '".$userId."'";
+    $sql = "SELECT * FROM delivery_address WHERE user_id = $userId";
 
-    return findOne($conn, $sql);
+    return findAll($conn, $sql);
+}
+
+function findDeliveryById($userId, $id) {
+    $conn = connectDatabase();
+
+    $sql = "SELECT * FROM delivery_address WHERE id = $id and user_id = $userId";
+
+    return findAll($conn, $sql);
 }
 
 function saveDeliveryAddress($userId, $deliveryRow) {
     $conn = connectDatabase();
 
-    $sql = "INSERT INTO delivery_address (user_id, address, zip_code, city, phone) VALUES ($userId, ".$deliveryRow['address']."," .$deliveryRow['zipCode']."," .$deliveryRow['city']."," .$deliveryRow['phone']."";
-    executeQuery($conn, $sql, false);
+    $sql = "INSERT INTO delivery_address (user_id, address, zip_code, city, phone) VALUES ($userId, '".$deliveryRow['address']."','" .$deliveryRow['zip_code']."','" .$deliveryRow['city']."','" .$deliveryRow['phone']."')";
+    $id = executeQuery($conn, $sql, false);
 
     closeDatabase($conn);
-}
 
+    return $id;
+}
 
 ?>

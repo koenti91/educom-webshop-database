@@ -276,7 +276,7 @@ function validateDeliveryAddress() {
         if (empty($zipCode)) {
             $valid = false;
             $zipCodeErr = "Vul een postcode in.";
-        } else if (!preg_match("/^[0-9]{4}\s[A-Z]{2}$/",$zipCode)) {
+        } else if (!preg_match("/^[0-9]{4}[A-Z]{2}$/",$zipCode)) {
             $zipCodeErr = "Vul je postcode in volgens dit formaat: 1234AB.";
         }
 

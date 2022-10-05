@@ -45,10 +45,31 @@ function handleActionForm() {
         deleteFromCart($productId);
         break;
     
-    case "order":
+    // case "order":
+    //     $userId = getLoggedInUserID();
+    //     $data = getShoppingCartRows();
+    //     $data = storeOrder($userId, $data["cartRows"]);
+    //     break;
+    case "delivery_address":
         $userId = getLoggedInUserID();
-        $data = getShoppingCartRows();
-        $data = storeOrder($userId, $data["cartRows"]);
+        $address = getPostVar("address");
+        $zipCode = getPostVar("zipCode");
+        $city = getPostVar("city");
+        $phone = getPostVar("phone");
+        
+        $input = array(
+            'address' => $address,
+            'zipCode' => $zipCode,
+            'city' => $city,
+            'phone' => $phone,
+        );
+
+        $delivery_address_id = storeDeliveryAddress($userId, $input);
+        $delivery_address = findDeliveryById($userId, $delivery_address_id);
+        $cartRows = getShoppingCartRows();     
+
+        storeOrder($userId, $delivery_address, $data["cartRows"]);
+
         break;
     }
     return $data;
@@ -83,11 +104,11 @@ function getShoppingCartRows() {
     return array("cartRows" => $cartRows, "total" => $total, "genericErr" => $genericErr);
 }
 
-function storeOrder($userId, $cartRows) {
+function storeOrder($userId, $deliveryAddress, $cartRows) {
     $genericErr = "";
-
+    
     try {
-    saveOrder($userId, $cartRows);
+    saveOrder($userId, $deliveryAddress, $cartRows);
     emptyCart();
    } catch (Exception $exception) {
         $genericErr = 'Excuses, op dit moment lukt het niet om je bestelling te verwerken.';

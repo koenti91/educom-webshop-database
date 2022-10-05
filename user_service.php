@@ -38,4 +38,12 @@ function storeNewPassword($userId, $newPassword) {
     changePassword($userId, $hashedPassword);
 }
 
+function getCurrentDeliveryAddress($userId) {
+    return findDeliveryAddresses($userId);
+}
+
+function storeDeliveryAddress($userId, $data) {
+    return saveDeliveryAddress($userId, $data);
+}
+
 ?>

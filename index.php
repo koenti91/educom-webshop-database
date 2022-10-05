@@ -76,15 +76,24 @@ function processRequest($page) {
         case 'confirm_order':
             $data = handleActionForm();
             break;
+
+        case 'delivery_address':
+            require_once('delivery_address.php');
+            $userId = getLoggedInUserID();
+            $addresses = getCurrentDeliveryAddress($userId);
+
+            $data['user'] = findUserByID($userId);
+            $data['addresses'] = $addresses;
+            break;
     }
 
     $data['page'] = $page;
     $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 
                     'webshop' => 'Shop Headwear');
     if(isUserLoggedIn()) {
+        $data['menu'] ['shoppingCart'] = 'Winkelmand';
         $data['menu'] ['logout'] = 'Logout ' . getLoggedInUsername();
         $data['menu'] ['changepw'] = 'Verander wachtwoord';
-        $data['menu'] ['shoppingCart'] = 'Winkelmand';
     } else {
         $data['menu'] ['login'] = 'Login';
         $data['menu'] ['register'] = 'Registreren';
@@ -146,6 +155,11 @@ function showContent($data) {
             showOrderConfirmation($data);
             break;
         
+        case 'delivery_address':
+            require_once('delivery_address.php');
+            chooseDeliveryAddress($data);
+            addNewDeliveryAddress($data);
+            break;
     }
 }
 
@@ -235,6 +249,10 @@ function showHeadSection($data)
             require_once('order_confirmation.php');
             showOrderConfirmationHeader();
             break;
+        case 'delivery_address':
+            require_once('delivery_address.php');
+            showDeliveryAddressHeader();
+            break;
         default:
             echo 'Error: Page NOT found';
     }
@@ -293,6 +311,10 @@ function showHeader($data) {
             require_once('order_confirmation.php');
             showOrderConfirmationHeader();
             break;
+        case 'delivery_address';
+            require_once('delivery_address.php');
+            showDeliveryAddressHeader();
+            break;
         default:
             echo 'Error: Page not found';
     }
@@ -322,6 +344,7 @@ function endDocument()
 {
     echo '</html>';
 }
+
  function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {
     if (!isUserLoggedIn()) {
         return;
@@ -339,6 +362,5 @@ function endDocument()
     echo '<input type="hidden" name="page" value="'. $nextPage .'">';  
     echo '<input type="submit" name="submit" class="btn-btn" value= "'.$buttonLabel.'">';
     echo '</form>';
-
  }
 ?>

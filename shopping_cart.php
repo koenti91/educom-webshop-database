@@ -53,7 +53,7 @@
 
      function showPayButton($data) {
         if (!empty ($data['cartRows'])) {
-            addActionForm("order", "Door naar afrekenen", "confirm_order");
+            addActionForm("order", "Door naar gegevens", "delivery_address");
         }
      }
 ?>
