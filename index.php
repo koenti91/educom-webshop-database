@@ -92,11 +92,11 @@ function processRequest($page) {
 
         case 'newDeliveryAddress':
             $data = validateDeliveryAddress();
+            $userId = getLoggedInUserID();
             if($data['valid']) {
-                //storeDeliveryAddress
+                storeDeliveryAddress($userId, $data);
                 $page = 'lastCheck';
             }
-            break;
             break;
 
         case 'lastCheck':
@@ -175,8 +175,12 @@ function showContent($data) {
         case 'newDeliveryAddress':
             addNewDeliveryAddress($data);
             break;
-
+        
         case 'lastCheck':
+            //
+            break;
+
+        case 'orderConfirmation':
             require_once('order_confirmation.php');
             showOrderConfirmation($data);
             break;
@@ -265,14 +269,15 @@ function showHeadSection($data)
             require_once('shopping_cart.php');
             showShoppingCartHeader();
             break;
-        case 'lastCheck':
-            require_once('order_confirmation.php');
-            showOrderConfirmationHeader();
-            break;
         case 'deliveryAddress':
         case 'newDeliveryAddress':
+        case 'lastCheck':
             require_once('delivery_address.php');
             showDeliveryAddressHeader();
+            break;
+        case 'orderConfirmation':
+            require_once('order_confirmation.php');
+            showOrderConfirmationHeader();
             break;
         default:
             echo 'Error: Page NOT found';
@@ -328,14 +333,15 @@ function showHeader($data) {
             require_once('shopping_cart.php');
             showShoppingCartHeader();
             break;
-        case 'confirm_order':
-            require_once('order_confirmation.php');
-            showOrderConfirmationHeader();
-            break;
         case 'deliveryAddress':
         case 'newDeliveryAddress':
+        case 'lastCheck':
             require_once('delivery_address.php');
             showDeliveryAddressHeader();
+            break;
+        case 'orderConfirmation':
+            require_once('order_confirmation.php');
+            showOrderConfirmationHeader();
             break;
         default:
             echo 'Error: Page not found';

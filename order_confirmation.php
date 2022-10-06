@@ -5,7 +5,7 @@ function showOrderConfirmationHeader() {
 }
 
 function showOrderConfirmation() {
-    echo '<p> Bedankt voor je bestelling! Wordt vervolgd..</p>';
+    echo '<p> Bedankt voor je bestelling!</p>';
 }
 
 ?>
