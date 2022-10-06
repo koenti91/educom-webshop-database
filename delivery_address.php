@@ -13,26 +13,28 @@ function chooseDeliveryAddress($data) {
     echo 'E-mailadres: '.$data['user']["email"];
     echo '<br>';
     echo '</fieldset>';
+
     
+    echo '<form action="index.php" method="post">';
     if (count($data['addresses']) > 0) {
-        echo '<form action="index.php" method="post">
-        <fieldset>
-        <label for="delivery-address"><b>Afleveradres: </b></label>
-            <select class="delivery-address" name="delivery-address" id="delivery-address" required>
-            <option value="">Vul een nieuw afleveradres in</option>';
+        echo '<fieldset>
+            <label for="delivery-address"><b>Afleveradres: </b></label>
+            <select class="delivery-address" name="deliveryAddressId" id="delivery-address" required>
+            <option value="0">Vul een nieuw afleveradres in</option>';
             foreach ($data['addresses'] as $address) {
                 $selected = $address['is_default'] ? ' selected' : '';
-                echo '<option value="'.$address['id'].'" '.$selected.'>'.$address['street'].' '.$address['city'].'</option>';
+                echo '<option value="'.$address['id'].''.$selected.'">'.$address['address'].' '.$address['city'].'</option>';
             }
         echo '
         </select>
-        <span class="error">* ' . $data["addressErr"] ?? '' . '</span>
-        </fieldset>
-        <button class="submit" type="submit">Bevestigen</button>
-        </form>';
+        <span class="error">* ' . $data["deliveryAddressIdErr"] ?? '' . '</span>
+        </fieldset>';
+    } else {
+        echo '<input type="hidden" name="delivery-address" value="0">';
     }
-    
-   
+    echo '<input type="hidden" name="page" value="deliveryAddress">
+        <button class="submit" type="submit">Volgende</button>
+        </form>';
 }
 
 function addNewDeliveryAddress($data) {      
@@ -44,8 +46,8 @@ function addNewDeliveryAddress($data) {
                 <span class="error">* ' . getArrayVar($data, "addressErr") . '</span>
             </div>
             <div>
-                <label for ="zip_code"><b>Postcode: </b></label>
-                <input type="text" name="zip-code" placeholder="1234AB" maxlength="6" value="' . getArrayVar($data, "zipCode"). '" required>
+                <label for ="zip-code"><b>Postcode: </b></label>
+                <input type="text" name="zip-code" placeholder="1234AB" maxlength="6" value="' . getArrayVar($data, "zip-code"). '" required>
                 <span class="error">* ' . getArrayVar($data, "zipCodeErr"). '</span> 
             </div>
             <div>
@@ -59,9 +61,8 @@ function addNewDeliveryAddress($data) {
                 <span class="error">* ' . getArrayVar($data, "phoneErr"). '</span>
             </div>
         </fieldset>
+        <input type="hidden" name="page" value="newDeliveryAddress" />
         <button class="submit" type="submit">Bevestigen</button>
-        <input type="hidden" name="page" value="confirm_order" />
-        <input type="hidden" name="action" value="delivery_address" />
     </form>
     ';
 }

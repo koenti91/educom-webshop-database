@@ -259,6 +259,24 @@ function validateChangePassword() {
                     "valid" => $valid); 
 }
 
+function validateDeliveryAddressSelection() {
+    $deliveryAddressId = $deliveryAddressIdErr = "";
+    $valid = false;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $deliveryAddressId = testInput(getPostVar("deliveryAddressId"));
+        if (empty($deliveryAddressId) && $deliveryAddressId != "0") {
+            $deliveryAddressIdErr = "Kies een adres.";
+        }
+        
+        if (empty($deliveryAddressIdErr)) {
+            $valid = true;
+        }
+    }
+    return array ("deliveryAddressId" => $deliveryAddressId, "deliveryAddressIdErr" => $deliveryAddressIdErr, "valid" => $valid);  
+}
+
 function validateDeliveryAddress() {
     $address = $zipCode = $city = $phone = '';
     $addressErr = $zipCodeErr = $cityErr = $phoneErr = '';
@@ -272,7 +290,7 @@ function validateDeliveryAddress() {
         $addressErr = "Vul een adres in.";
         }
 
-        $zipCode = testInput(getPostVar("zipCode"));
+        $zipCode = testInput(getPostVar("zip-code"));
         if (empty($zipCode)) {
             $valid = false;
             $zipCodeErr = "Vul een postcode in.";
@@ -284,21 +302,21 @@ function validateDeliveryAddress() {
         if (empty($city)) {
             $valid = false;
             $cityErr = "Vul een woonplaats in.";
-        } else if (!preg_match("/^0([0-9]{9})$/",$phone)) {
-            $phoneErr = "Vul een geldig telefoonnummer in.";
-        }
+        } 
 
         $phone = testInput(getPostVar("phone"));
         if(empty($phone)) {
             $valid = false;
-            $addressErr = "Vul een telefoonnummer in.";
+            $phoneErr = "Vul een telefoonnummer in.";
+        } else if (!preg_match("/^0([0-9]{9})$/",$phone)) {
+            $phoneErr = "Vul een geldig telefoonnummer in.";
         }
         
         if (empty($addressErr) && empty($zipCodeErr) && empty($cityErr) && empty($phoneErr)) {
             $valid = true;
         }
 
-    return array ("address" => $address, "zipCode" => $zipCode, "city" => $city, "phone" => $phone,
+    return array ("address" => $address, "zip-code" => $zipCode, "city" => $city, "phone" => $phone,
                     "addressErr" => $addressErr, "zipCodeErr" => $zipCodeErr, "cityErr" => $cityErr, 
                     "phoneErr" => $phoneErr, "valid" => $valid);
     }   

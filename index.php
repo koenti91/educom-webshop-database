@@ -73,18 +73,35 @@ function processRequest($page) {
             $data = getShoppingCartRows();
             break;
 
-        case 'confirm_order':
-            $data = handleActionForm();
-            break;
-
-        case 'delivery_address':
+        case 'deliveryAddress':
             require_once('delivery_address.php');
+            $data = validateDeliveryAddressSelection();
             $userId = getLoggedInUserID();
-            $addresses = getCurrentDeliveryAddress($userId);
-
-            $data['user'] = findUserByID($userId);
-            $data['addresses'] = $addresses;
+            if ($data['valid']) {
+                if ($data['deliveryAddressId'] == 0) {
+                    $page = 'newDeliveryAddress';
+                } else {
+                    $page = "lastCheck";
+                    $data = getDeliveryAddressesData($userId);
+                }
+            }
+            else {
+                $data = array_merge($data, getDeliveryAddressesData($userId));
+            }
             break;
+
+        case 'newDeliveryAddress':
+            $data = validateDeliveryAddress();
+            if($data['valid']) {
+                //storeDeliveryAddress
+                $page = 'lastCheck';
+            }
+            break;
+            break;
+
+        case 'lastCheck':
+            $data = handleActionForm();
+            break;    
     }
 
     $data['page'] = $page;
@@ -149,16 +166,19 @@ function showContent($data) {
             require_once('shopping_cart.php');
             showShoppingCart($data);
             break;
-
-        case 'confirm_order':
-            require_once('order_confirmation.php');
-            showOrderConfirmation($data);
-            break;
-        
-        case 'delivery_address':
+       
+        case 'deliveryAddress':
             require_once('delivery_address.php');
             chooseDeliveryAddress($data);
+            break;
+
+        case 'newDeliveryAddress':
             addNewDeliveryAddress($data);
+            break;
+
+        case 'lastCheck':
+            require_once('order_confirmation.php');
+            showOrderConfirmation($data);
             break;
     }
 }
@@ -245,11 +265,12 @@ function showHeadSection($data)
             require_once('shopping_cart.php');
             showShoppingCartHeader();
             break;
-        case 'confirm_order':
+        case 'lastCheck':
             require_once('order_confirmation.php');
             showOrderConfirmationHeader();
             break;
-        case 'delivery_address':
+        case 'deliveryAddress':
+        case 'newDeliveryAddress':
             require_once('delivery_address.php');
             showDeliveryAddressHeader();
             break;
@@ -303,15 +324,16 @@ function showHeader($data) {
             require_once('webshop.php');
             showWebshopHeader();
             break;
-        case 'shoppingCart';
+        case 'shoppingCart':
             require_once('shopping_cart.php');
             showShoppingCartHeader();
             break;
-        case 'confirm_order';
+        case 'confirm_order':
             require_once('order_confirmation.php');
             showOrderConfirmationHeader();
             break;
-        case 'delivery_address';
+        case 'deliveryAddress':
+        case 'newDeliveryAddress':
             require_once('delivery_address.php');
             showDeliveryAddressHeader();
             break;

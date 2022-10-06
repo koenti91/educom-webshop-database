@@ -14,7 +14,7 @@ function getWebshopProducts() {
     return array("products" => $products, "genericErr" => $genericErr);
 }
 
-function GetProductDetails($productId) {
+function getProductDetails($productId) {
         
     $product = NULL;
     $genericErr = "";
@@ -28,6 +28,7 @@ function GetProductDetails($productId) {
 
     return array("product" => $product, "genericErr" => $genericErr);
 }
+
 
 function handleActionForm() {
     $data = NULL;
@@ -51,15 +52,19 @@ function handleActionForm() {
     //     $data = storeOrder($userId, $data["cartRows"]);
     //     break;
     case "delivery_address":
-        $userId = getLoggedInUserID();
+        $userId = getLoggedInUserId();
+        $deliveryAddressId = getPostVar("delivery-address", -1);
+        if ($deliveryAddressId == -1) {
+            $page = "new_delivery_address";
+        }
         $address = getPostVar("address");
-        $zipCode = getPostVar("zipCode");
+        $zipCode = getPostVar("zip-code");
         $city = getPostVar("city");
         $phone = getPostVar("phone");
         
         $input = array(
             'address' => $address,
-            'zipCode' => $zipCode,
+            'zip-code' => $zipCode,
             'city' => $city,
             'phone' => $phone,
         );
@@ -68,7 +73,7 @@ function handleActionForm() {
         $delivery_address = findDeliveryById($userId, $delivery_address_id);
         $cartRows = getShoppingCartRows();     
 
-        storeOrder($userId, $delivery_address, $data["cartRows"]);
+        storeOrder($userId, $delivery_address, $cartRows);
 
         break;
     }

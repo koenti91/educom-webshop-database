@@ -46,4 +46,19 @@ function storeDeliveryAddress($userId, $data) {
     return saveDeliveryAddress($userId, $data);
 }
 
+function getDeliveryAddressesData($userId) { 
+    $addresses = array();
+    $user = array();
+    $genericErr = "";
+    try {
+        $addresses = getCurrentDeliveryAddress($userId);
+        $user = findUserByID($userId);
+    }
+    catch (Exception $exception) {
+        $genericErr = "Excuses, adressen kunnen niet worden opgehaald.";
+        logError("GetDeliveryAddressesData failed" .$exception -> getMessage());
+    }
+
+    return array("addresses" => $addresses, 'user' => $user, "genericErr" => $genericErr);
+}
 ?>

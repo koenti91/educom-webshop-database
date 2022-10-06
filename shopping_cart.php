@@ -53,7 +53,7 @@
 
      function showPayButton($data) {
         if (!empty ($data['cartRows'])) {
-            addActionForm("order", "Door naar gegevens", "delivery_address");
+            echo '<a href="index.php?page=deliveryAddress"><button>Naar gegevens</button></a>';
         }
      }
 ?>
