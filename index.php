@@ -103,6 +103,7 @@ function processRequest($page) {
         case 'lastCheck':
             require_once ('last_check.php');
             $data = handleActionForm();
+            storeOrder($userId, $deliveryAddress, $cartRows);
             $page = 'orderConfirmation';
             break;    
     }

@@ -63,7 +63,7 @@ function addNewDeliveryAddress($data) {
                 <span class="error">* ' . getArrayVar($data, "phoneErr"). '</span>
             </div>
         </fieldset>
-        <input type="hidden" name="page" value="newDeliveryAddress" />
+        <input type="hidden" name="page" value="orderConfirmation" />
         <button class="submit" type="submit">Bevestigen</button>
     </form>
     ';
