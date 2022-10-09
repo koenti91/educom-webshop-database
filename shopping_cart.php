@@ -32,7 +32,7 @@
             </table>
             </div>';
             
-            showPayButton($data);
+            showDeliveryPageButton($data);
             
         } else {
             echo '<p>Je hebt nog geen producten aan je winkelmandje toegevoegd.</p>';
@@ -51,7 +51,7 @@
         echo '</td></tr>';
      }
 
-     function showPayButton($data) {
+     function showDeliveryPageButton($data) {
         if (!empty ($data['cartRows'])) {
             echo '<a href="index.php?page=deliveryAddress"><button>Naar gegevens</button></a>';
         }

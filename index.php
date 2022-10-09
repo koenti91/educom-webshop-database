@@ -10,6 +10,7 @@ require_once ("products_service.php");
 // Main
 $page = getRequestedPage();
 $data = processRequest($page);
+
 var_dump($data);
 var_dump($_SESSION);
 showResponsePage($data);
@@ -100,7 +101,9 @@ function processRequest($page) {
             break;
 
         case 'lastCheck':
+            require_once ('last_check.php');
             $data = handleActionForm();
+            $page = 'orderConfirmation';
             break;    
     }
 
@@ -177,7 +180,8 @@ function showContent($data) {
             break;
         
         case 'lastCheck':
-            //
+            require_once('last_check.php');
+            showLastCheckContent($data);
             break;
 
         case 'orderConfirmation':
@@ -271,7 +275,6 @@ function showHeadSection($data)
             break;
         case 'deliveryAddress':
         case 'newDeliveryAddress':
-        case 'lastCheck':
             require_once('delivery_address.php');
             showDeliveryAddressHeader();
             break;
@@ -279,6 +282,11 @@ function showHeadSection($data)
             require_once('order_confirmation.php');
             showOrderConfirmationHeader();
             break;
+        case 'lastCheck':
+            require_once('last_check.php');
+            showLastCheckHeader();
+            break;
+
         default:
             echo 'Error: Page NOT found';
     }
@@ -335,13 +343,16 @@ function showHeader($data) {
             break;
         case 'deliveryAddress':
         case 'newDeliveryAddress':
-        case 'lastCheck':
             require_once('delivery_address.php');
             showDeliveryAddressHeader();
             break;
         case 'orderConfirmation':
             require_once('order_confirmation.php');
             showOrderConfirmationHeader();
+            break;
+        case 'lastCheck':
+            require_once('last_check.php');
+            showLastCheckHeader();
             break;
         default:
             echo 'Error: Page not found';

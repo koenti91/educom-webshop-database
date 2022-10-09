@@ -37,4 +37,14 @@ function deleteFromCart($productId) {
 function emptyCart() {
     $_SESSION['shoppingCart'] = array();
 }
+
+function storeDeliveryAddressForSession ($id) {
+    $_SESSION['deliveryAddressId'] = $id;
+    return true; 
+}
+
+function getDeliveryAddressForSession () {
+    return $_SESSION['deliveryAddressId'];
+}
+
 ?>
