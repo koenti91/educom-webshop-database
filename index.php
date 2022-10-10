@@ -12,7 +12,6 @@ $page = getRequestedPage();
 $data = processRequest($page);
 
 var_dump($data);
-var_dump($_SESSION);
 showResponsePage($data);
 // Functions
 
@@ -83,7 +82,9 @@ function processRequest($page) {
                     $page = 'newDeliveryAddress';
                 } else {
                     $page = "lastCheck";
-                    $data = getDeliveryAddressesData($userId);
+                    $data = array_merge($data, findDeliveryById($userId, $data['deliveryAddressId']));
+                    $data["user"] = findUserByID($userId);
+                    $data = array_merge($data, getShoppingCartRows());
                 }
             }
             else {
@@ -92,19 +93,19 @@ function processRequest($page) {
             break;
 
         case 'newDeliveryAddress':
-            $data = validateDeliveryAddress();
             $userId = getLoggedInUserID();
+            $data = validateDeliveryAddress($userId);
             if($data['valid']) {
-                storeDeliveryAddress($userId, $data);
+                $data["deliveryAddressId"] = storeDeliveryAddress($userId, $data);
+                $data["user"] = findUserByID($userId);
+                $data = array_merge($data, getShoppingCartRows());
                 $page = 'lastCheck';
             }
             break;
 
-        case 'lastCheck':
+        case 'orderConfirmation':
             require_once ('last_check.php');
             $data = handleActionForm();
-            storeOrder($userId, $deliveryAddress, $cartRows);
-            $page = 'orderConfirmation';
             break;    
     }
 

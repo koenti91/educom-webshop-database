@@ -43,7 +43,7 @@ function getCurrentDeliveryAddress($userId) {
 }
 
 function storeDeliveryAddress($userId, $data) {
-    return saveDeliveryAddress($userId, $data);
+    return saveDeliveryAddress($userId, $data["address"], $data["zip_code"], $data["city"], $data["phone"]);
 }
 
 function getDeliveryAddressesData($userId) { 

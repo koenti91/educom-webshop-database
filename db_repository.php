@@ -34,7 +34,6 @@ function findAll($conn, $sql) {
 }
 
 function runQuery($conn, $sql) {
-
     $result = mysqli_query($conn, $sql);
         
     if(!$result) {
@@ -137,7 +136,7 @@ function saveOrder($userId, $deliveryAddressId, $cartRows) {
 
     foreach($cartRows as $cartRow) {
         $sql = " INSERT INTO order_products (order_id, product_id, quantity, price) 
-                 VALUES ($orderId, " . $cartRow['productId'] . ", " . $cartRow['quantity'] . ", '" . ($cartRow['price']/100) . "')'";
+                 VALUES ($orderId, " . $cartRow['productId'] . ", " . $cartRow['quantity'] . ", '" . ($cartRow['price']/100) . "')";
         executeQuery($conn, $sql, false);
     }
     closeDatabase($conn);
@@ -151,18 +150,29 @@ function findDeliveryAddresses($userId) {
     return findAll($conn, $sql);
 }
 
+function findDeliveryAddressByUserAndAddress($userId, $address, $zipCode, $city) {
+    $conn = connectDatabase();
+
+    $sql = "SELECT * FROM delivery_address 
+            WHERE user_id = $userId and address = '$address' and 
+                  zip_code = '$zipCode' and city = '$city'";
+
+    return findOne($conn, $sql);
+}
+
+
 function findDeliveryById($userId, $id) {
     $conn = connectDatabase();
 
     $sql = "SELECT * FROM delivery_address WHERE id = $id and user_id = $userId";
 
-    return findAll($conn, $sql);
+    return findOne($conn, $sql);
 }
 
-function saveDeliveryAddress($userId, $deliveryRow) {
+function saveDeliveryAddress($userId, $address, $zipCode, $city, $phone) {
     $conn = connectDatabase();
 
-    $sql = "INSERT INTO delivery_address (user_id, address, zip_code, city, phone) VALUES ($userId, '".$deliveryRow['address']."','" .$deliveryRow['zip-code']."','" .$deliveryRow['city']."','" .$deliveryRow['phone']."')";
+    $sql = "INSERT INTO delivery_address (user_id, address, zip_code, city, phone) VALUES ($userId, '$address', '$zipCode', '$city','$phone')";
     $id = executeQuery($conn, $sql, false);
     
     closeDatabase($conn);

@@ -44,26 +44,26 @@ function addNewDeliveryAddress($data) {
         <fieldset>
             <div>
                 <label for ="address"><b>Adres: </b></label>
-                <input type="text" name="address" placeholder="Hoofdstraat 1" maxlength="100" value="'. getArrayVar($data, "address"). '" required>
+                <input type="text" id="address" name="address" placeholder="Hoofdstraat 1" maxlength="100" value="'. getArrayVar($data, "address"). '" required>
                 <span class="error">* ' . getArrayVar($data, "addressErr") . '</span>
             </div>
             <div>
-                <label for ="zip-code"><b>Postcode: </b></label>
-                <input type="text" name="zip-code" placeholder="1234AB" maxlength="6" value="' . getArrayVar($data, "zip-code"). '" required>
+                <label for ="zip_code"><b>Postcode: </b></label>
+                <input type="text" id="zip_code" name="zip_code" placeholder="1234AB" maxlength="6" value="' . getArrayVar($data, "zip_code"). '" required>
                 <span class="error">* ' . getArrayVar($data, "zipCodeErr"). '</span> 
             </div>
             <div>
                 <label for ="city"><b>Woonplaats: </b></label>
-                <input type ="text" name="city" placeholder="Meerdijk" maxlength="100" value="' . getArrayVar($data, "city"). '" required>
+                <input type ="text" id="city" name="city" placeholder="Meerdijk" maxlength="100" value="' . getArrayVar($data, "city"). '" required>
                 <span class="error">* ' . getArrayVar($data, "cityErr"). '</span>
             </div>
             <div>
                 <label for ="phone"><b>Telefoon: </b></label>
-                <input type ="tel" name="phone" placeholder="0612345678" maxlength="10" value="' . getArrayVar($data, "phone"). '" required>
+                <input type ="tel" id="phone" name="phone" placeholder="0612345678" maxlength="10" value="' . getArrayVar($data, "phone"). '" required>
                 <span class="error">* ' . getArrayVar($data, "phoneErr"). '</span>
             </div>
         </fieldset>
-        <input type="hidden" name="page" value="orderConfirmation" />
+        <input type="hidden" name="page" value="newDeliveryAddress" />
         <button class="submit" type="submit">Bevestigen</button>
     </form>
     ';

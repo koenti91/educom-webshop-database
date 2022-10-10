@@ -277,7 +277,7 @@ function validateDeliveryAddressSelection() {
     return array ("deliveryAddressId" => $deliveryAddressId, "deliveryAddressIdErr" => $deliveryAddressIdErr, "valid" => $valid);  
 }
 
-function validateDeliveryAddress() {
+function validateDeliveryAddress($userId) {
     $address = $zipCode = $city = $phone = '';
     $addressErr = $zipCodeErr = $cityErr = $phoneErr = '';
     $valid = false;
@@ -290,7 +290,7 @@ function validateDeliveryAddress() {
         $addressErr = "Vul een adres in.";
         }
 
-        $zipCode = testInput(getPostVar("zip-code"));
+        $zipCode = testInput(getPostVar("zip_code"));
         if (empty($zipCode)) {
             $valid = false;
             $zipCodeErr = "Vul een postcode in.";
@@ -313,10 +313,14 @@ function validateDeliveryAddress() {
         }
         
         if (empty($addressErr) && empty($zipCodeErr) && empty($cityErr) && empty($phoneErr)) {
-            $valid = true;
+            if(empty(findDeliveryAddressByUserAndAddress($userId, $address, $zipCode, $city))) {
+                $valid = true;
+            } else {
+                $addressErr = "Dit adres bestaat al.";
+            }
         }
 
-    return array ("address" => $address, "zip-code" => $zipCode, "city" => $city, "phone" => $phone,
+    return array ("address" => $address, "zip_code" => $zipCode, "city" => $city, "phone" => $phone,
                     "addressErr" => $addressErr, "zipCodeErr" => $zipCodeErr, "cityErr" => $cityErr, 
                     "phoneErr" => $phoneErr, "valid" => $valid);
     }   

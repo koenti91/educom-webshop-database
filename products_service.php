@@ -46,12 +46,14 @@ function handleActionForm() {
         deleteFromCart($productId);
         break;
     
-    // case "order":
-    //     $userId = getLoggedInUserID();
-    //     $data = getShoppingCartRows();
-    //     $data = storeOrder($userId, $data["cartRows"]);
-    //     break;
-    case "delivery_address":
+    case "orderConfirmation":
+        $userId = getLoggedInUserID();
+        $data = getShoppingCartRows();
+        $deliveryAddressId = getPostVar("deliveryAddressId", -1);
+        $data = storeOrder($userId, $deliveryAddressId, $data["cartRows"]);
+        break;
+
+    /*case "delivery_address":
         $userId = getLoggedInUserId();
         $deliveryAddressId = getPostVar("delivery-address", -1);
         if ($deliveryAddressId == -1) {
@@ -72,11 +74,8 @@ function handleActionForm() {
         $delivery_address_id = storeDeliveryAddress($userId, $input);
         $delivery_address = findDeliveryById($userId, $delivery_address_id);
         $cartRows = getShoppingCartRows();     
-
-        storeOrder($userId, $delivery_address, $cartRows);
-
-        break;
-    }
+        break;*/
+    } 
     return $data;
 }
 

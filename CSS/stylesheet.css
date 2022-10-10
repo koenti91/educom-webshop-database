@@ -203,6 +203,7 @@
 
   .table-responsive {
     text-align: center;
+    border: #3d3c42 1px solid;
   }
 
   table {
@@ -233,4 +234,8 @@
   margin-left: 350px;
   margin-bottom: 20px;
   width: 200px;
+  }
+
+  .order-info {
+    margin-left: 10px;
   }
